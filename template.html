@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>中国高校物理教师汇总 · Physics Faculty Directory</title>
+<style>
+  :root {
+    --bg: #0f1115; --panel: #171a21; --panel-2: #1e222b; --border: #2a2f3a;
+    --text: #e6e9ef; --muted: #9aa3b2; --accent: #6ea8fe; --accent-2: #7ee0b8;
+    --chip: #232936; --radius: 12px;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg); color: var(--text);
+    font: 15px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          "Helvetica Neue", "PingFang SC", "Microsoft YaHei", sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  header {
+    padding: 26px 22px 16px; border-bottom: 1px solid var(--border);
+    background: linear-gradient(180deg, #141821, #0f1115);
+    position: sticky; top: 0; z-index: 10; backdrop-filter: blur(8px);
+  }
+  h1 { margin: 0 0 4px; font-size: 21px; letter-spacing: .2px; }
+  .sub { color: var(--muted); font-size: 13px; }
+  .sub b { color: var(--text); font-weight: 600; }
+
+  .controls { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; align-items: center; }
+  .search { flex: 1 1 260px; min-width: 220px; position: relative; }
+  .search input {
+    width: 100%; padding: 10px 12px 10px 34px; background: var(--panel-2);
+    border: 1px solid var(--border); border-radius: 10px; color: var(--text);
+    font-size: 14px; outline: none;
+  }
+  .search input:focus { border-color: var(--accent); }
+  .search::before {
+    content: "⌕"; position: absolute; left: 11px; top: 50%;
+    transform: translateY(-50%); color: var(--muted); font-size: 16px;
+  }
+  select {
+    padding: 10px 12px; background: var(--panel-2); border: 1px solid var(--border);
+    border-radius: 10px; color: var(--text); font-size: 14px; outline: none; cursor: pointer;
+    max-width: 260px;
+  }
+  select:focus { border-color: var(--accent); }
+
+  .schooltabs { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+  .schooltabs button {
+    padding: 7px 14px; border-radius: 999px; border: 1px solid var(--border);
+    background: var(--panel-2); color: var(--muted); font-size: 13px; cursor: pointer;
+    transition: all .15s;
+  }
+  .schooltabs button:hover { color: var(--text); border-color: #3a4256; }
+  .schooltabs button.active { background: #1d2c49; border-color: #2c3d5e; color: var(--text); }
+  .schooltabs button .cnt { color: var(--muted); font-size: 11px; margin-left: 5px; }
+  .schooltabs button.active .cnt { color: var(--accent); }
+
+  main { padding: 20px 22px 60px; max-width: 1400px; margin: 0 auto; }
+  .meta { color: var(--muted); font-size: 13px; margin-bottom: 14px; }
+
+  .grid { display: grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); }
+  .card {
+    background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 16px 16px 14px; display: flex; flex-direction: column; gap: 10px;
+    transition: border-color .15s, transform .15s;
+  }
+  .card:hover { border-color: #3a4256; transform: translateY(-2px); }
+  .card h2 { margin: 0; font-size: 16.5px; }
+  .card h2 .local { color: var(--muted); font-weight: 400; font-size: 14px; margin-left: 6px; }
+  .role { color: var(--accent-2); font-size: 13px; font-weight: 600; }
+  .affil { color: var(--muted); font-size: 13px; }
+  .summary { color: #cdd3de; font-size: 13.5px; }
+
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip {
+    background: var(--chip); border: 1px solid var(--border); color: var(--muted);
+    font-size: 12px; padding: 3px 9px; border-radius: 999px;
+  }
+  .chip.topic { color: var(--accent); border-color: #2c3d5e; }
+
+  .section-label {
+    font-size: 11.5px; text-transform: uppercase; letter-spacing: .7px;
+    color: var(--muted); margin-bottom: -4px;
+  }
+  ul.pubs { margin: 0; padding-left: 16px; color: #c3cad6; font-size: 12.8px; }
+  ul.pubs li { margin-bottom: 3px; }
+  .venue { color: var(--accent-2); }
+
+  .links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; padding-top: 6px; }
+  .links a {
+    font-size: 12.5px; padding: 5px 10px; border-radius: 8px;
+    background: var(--panel-2); border: 1px solid var(--border);
+  }
+  .links a:hover { border-color: var(--accent); text-decoration: none; }
+  .links a.primary { background: #1d2c49; border-color: #2c3d5e; }
+
+  .badge { font-size: 11px; padding: 2px 7px; border-radius: 999px; border: 1px solid var(--border); color: var(--muted); }
+  .badge.fine { color: var(--accent-2); border-color: #23584a; }
+  .badge.coarse { color: var(--muted); }
+  .badge.unverified { color: #e0b877; border-color: #5a4a2a; }
+  .badge.aca { color: #e0b877; border-color: #5a4a2a; }
+
+  .empty { color: var(--muted); padding: 60px 0; text-align: center; }
+  .card-top { display: flex; justify-content: space-between; gap: 10px; align-items: flex-start; }
+
+  .loadmore { display: block; margin: 24px auto 0; padding: 10px 24px; border-radius: 10px;
+    background: var(--panel-2); border: 1px solid var(--border); color: var(--text);
+    font-size: 14px; cursor: pointer; }
+  .loadmore:hover { border-color: var(--accent); }
+  footer { border-top: 1px solid var(--border); margin-top: 40px; padding: 20px 22px 40px;
+    color: var(--muted); font-size: 12.5px; text-align: center; }
+</style>
+</head>
+<body>
+<header>
+  <h1>中国高校物理教师汇总 · Physics Faculty Directory</h1>
+  <div class="sub"><b id="shown">0</b> researchers · <span id="schcount">0</span> schools · generated <span id="gen">—</span></div>
+  <div class="controls">
+    <div class="search"><input id="q" type="search" placeholder="搜索姓名 / 研究方向 / 单位 / 简介 / 论文…" autocomplete="off"></div>
+    <select id="dept"><option value="">全部院系 / 单位</option></select>
+    <select id="title"><option value="">全部职称</option></select>
+    <select id="sort">
+      <option value="school">排序：学校</option>
+      <option value="name">排序：姓名</option>
+      <option value="title">排序：职称</option>
+    </select>
+  </div>
+  <div class="schooltabs" id="schooltabs"></div>
+</header>
+
+<main>
+  <div class="meta" id="meta"></div>
+  <div class="grid" id="grid"></div>
+  <div class="empty" id="empty" style="display:none">没有符合条件的教师。</div>
+  <button class="loadmore" id="loadmore" style="display:none">加载更多</button>
+</main>
+
+<footer>
+  数据来源：各校物理学院/教师主页官方公开信息 · 本页面为汇总检索页，仅供学术联系参考。<br>
+  收录：中国科学技术大学、北京大学、清华大学、南京大学、上海交通大学、复旦大学、中国科学院大学。
+</footer>
+
+<script>
+const DATA = /*__DATA__*/;
+const professors = DATA.professors || [];
+const schoolsMeta = DATA.schools || [];
+
+function esc(s){ return String(s==null?"":s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
+
+function haystack(p){
+  return [p.name, p.name_local, p.school, p.school_en, p.department, p.subject, p.title,
+          (p.research_directions||[]).join(" "), (p.focus_areas||[]).join(" "),
+          p.summary, (p.publications||[]).map(x=>x.title).join(" ")]
+    .map(x=>String(x||"").toLowerCase()).join(" ");
+}
+
+function render(p){
+  const chips = [];
+  (p.focus_areas||[]).slice(0,6).forEach(t => chips.push(`<span class="chip topic">${esc(t)}</span>`));
+  (p.research_directions||[]).slice(0,6).forEach(t => chips.push(`<span class="chip">${esc(t)}</span>`));
+
+  let pubs = "";
+  if (p.publications && p.publications.length){
+    const items = p.publications.slice(0,4).map(pb => {
+      const v = pb.venue ? ` <span class="venue">${esc(pb.venue)}</span>` : "";
+      const y = pb.year ? ` (${esc(pb.year)})` : "";
+      return `<li>${esc(pb.title)}${v}${y}</li>`;
+    }).join("");
+    pubs = `<div class="section-label">代表性成果</div><ul class="pubs">${items}</ul>`;
+  }
+
+  const links = [];
+  const profile = p.profile_url || p.homepage;
+  if (profile) links.push(`<a class="primary" href="${esc(profile)}" target="_blank" rel="noopener">个人主页</a>`);
+  if (p.homepage && p.homepage !== profile) links.push(`<a href="${esc(p.homepage)}" target="_blank" rel="noopener">课题组主页</a>`);
+  if (p.lab_website) links.push(`<a href="${esc(p.lab_website)}" target="_blank" rel="noopener">实验室</a>`);
+  if (p.scholar_url) links.push(`<a href="${esc(p.scholar_url)}" target="_blank" rel="noopener">Google Scholar</a>`);
+  if (p.email) links.push(`<a href="mailto:${esc(p.email)}">邮箱</a>`);
+
+  const conf = p.confidence === "fine"
+    ? '<span class="badge fine">已核验主页</span>'
+    : '<span class="badge coarse">名录</span>';
+  const unver = p.verified === false ? '<span class="badge unverified">待核验</span>' : "";
+  const aca = p.is_academician ? '<span class="badge aca">院士</span>' : "";
+
+  const local = (p.name_local && p.name_local !== p.name) ? `<span class="local">${esc(p.name_local)}</span>` : "";
+  const affil = [p.department, p.school].filter(Boolean).join(" · ");
+  const summary = p.summary ? `<div class="summary">${esc(p.summary)}</div>` : "";
+  const subj = p.subject ? `<span class="chip">${esc(p.subject)}</span>` : "";
+
+  return `<article class="card">
+    <div class="card-top">
+      <h2>${esc(p.name)}${local}</h2>
+      <div style="display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end">${aca}${conf}${unver}</div>
+    </div>
+    ${p.title ? `<div class="role">${esc(p.title)}</div>` : ""}
+    ${affil ? `<div class="affil">${esc(affil)}</div>` : ""}
+    ${summary}
+    ${(subj || chips.length) ? `<div class="chips">${subj}${chips.join("")}</div>` : ""}
+    ${pubs}
+    ${links.length ? `<div class="links">${links.join("")}</div>` : ""}
+  </article>`;
+}
+
+let state = { q: "", school: "", dept: "", title: "", sort: "school", page: 1 };
+const PAGE = 120;
+
+function buildTabs(){
+  const box = document.getElementById("schooltabs");
+  const total = professors.length;
+  let html = `<button data-school="" class="active">全部<span class="cnt">${total}</span></button>`;
+  schoolsMeta.forEach(s => {
+    html += `<button data-school="${esc(s.key)}">${esc(s.name)}<span class="cnt">${s.count}</span></button>`;
+  });
+  box.innerHTML = html;
+  box.querySelectorAll("button").forEach(btn => {
+    btn.addEventListener("click", () => {
+      state.school = btn.getAttribute("data-school");
+      state.page = 1;
+      box.querySelectorAll("button").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      buildDeptOptions();
+      apply();
+    });
+  });
+}
+
+function buildDeptOptions(){
+  const sel = document.getElementById("dept");
+  const seen = new Set();
+  const list = [];
+  professors.forEach(p => {
+    if (state.school && p.school_key !== state.school) return;
+    const d = p.department || "";
+    if (d && !seen.has(d)){ seen.add(d); list.push(d); }
+  });
+  list.sort((a,b)=>a.localeCompare(b,"zh"));
+  sel.innerHTML = `<option value="">全部院系 / 单位</option>` + list.map(d=>`<option value="${esc(d)}">${esc(d)}</option>`).join("");
+  if (!list.includes(state.dept)) state.dept = "";
+  sel.value = state.dept;
+}
+
+function buildTitleOptions(){
+  const sel = document.getElementById("title");
+  const seen = new Set(); const list = [];
+  professors.forEach(p => { const t = p.title||""; if (t && !seen.has(t)){ seen.add(t); list.push(t); } });
+  list.sort((a,b)=>a.localeCompare(b,"zh"));
+  sel.innerHTML = `<option value="">全部职称</option>` + list.map(t=>`<option value="${esc(t)}">${esc(t)}</option>`).join("");
+}
+
+function currentList(){
+  const q = state.q.toLowerCase().trim();
+  let list = professors.filter(p => {
+    if (state.school && p.school_key !== state.school) return false;
+    if (state.dept && p.department !== state.dept) return false;
+    if (state.title && p.title !== state.title) return false;
+    if (q && !haystack(p).includes(q)) return false;
+    return true;
+  });
+  const key = {
+    name: p => (p.name||"").toLowerCase(),
+    school: p => (p.school_key||"") + "|" + (p.name||"").toLowerCase(),
+    title: p => (p.title||"").toLowerCase() + "|" + (p.name||"").toLowerCase(),
+  }[state.sort];
+  list.sort((a,b) => key(a).localeCompare(key(b)));
+  return list;
+}
+
+function apply(){
+  const list = currentList();
+  const total = list.length;
+  const slice = list.slice(0, state.page * PAGE);
+  document.getElementById("grid").innerHTML = slice.map(render).join("");
+  document.getElementById("shown").textContent = total;
+  document.getElementById("empty").style.display = total ? "none" : "block";
+  const btn = document.getElementById("loadmore");
+  btn.style.display = slice.length < total ? "block" : "none";
+  const filters = [];
+  const sname = (schoolsMeta.find(s=>s.key===state.school)||{}).name;
+  if (sname) filters.push(sname);
+  if (state.dept) filters.push(state.dept);
+  if (state.title) filters.push(state.title);
+  document.getElementById("meta").textContent =
+    `显示 ${slice.length} / ${total} 位` + (filters.length ? " · " + filters.join(" · ") : "");
+}
+
+document.getElementById("q").addEventListener("input", e => { state.q = e.target.value; state.page = 1; apply(); });
+document.getElementById("dept").addEventListener("change", e => { state.dept = e.target.value; state.page = 1; apply(); });
+document.getElementById("title").addEventListener("change", e => { state.title = e.target.value; state.page = 1; apply(); });
+document.getElementById("sort").addEventListener("change", e => { state.sort = e.target.value; apply(); });
+document.getElementById("loadmore").addEventListener("click", () => { state.page++; apply(); });
+
+document.getElementById("gen").textContent = DATA.generated_at || "";
+document.getElementById("schcount").textContent = schoolsMeta.length;
+buildTabs();
+buildDeptOptions();
+buildTitleOptions();
+apply();
+</script>
+</body>
+</html>

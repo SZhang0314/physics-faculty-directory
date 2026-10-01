@@ -1,0 +1,4 @@
+scrape/cache/
+__pycache__/
+*.pyc
+*.bak
